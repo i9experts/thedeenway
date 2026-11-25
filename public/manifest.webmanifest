@@ -1,0 +1,9 @@
+{
+  "name": "The Deenway School",
+  "short_name": "Deenway",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf9f3",
+  "theme_color": "#0f4d2f",
+  "icons": [{ "src": "/brand/emblem.png", "sizes": "256x256", "type": "image/png" }]
+}

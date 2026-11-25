@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Deenway School//SPD 2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:spd-2026@thedeenwayschool.com
+DTSTAMP:20261123T000000Z
+DTSTART:20261219T130000Z
+DTEND:20261219T170000Z
+SUMMARY:Students Performance Day 2026 - Nurture on Values
+DESCRIPTION:The Deenway School Students Performance Day 2026. Venue and arrival details will be shared with families.
+URL:https://www.thedeenwayschool.com
+END:VEVENT
+END:VCALENDAR
