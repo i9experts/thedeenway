@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { clearFailures, endSession, isAdmin, passwordMatches, recordFailure, startSession, tooManyAttempts } from "@/lib/auth";
 import { addReel, deleteReel, moveReel, updateReel } from "@/lib/db";
-import { parseReelUrl } from "@/lib/reels";
+import { resolveReelUrl } from "@/lib/resolve";
+import { needsResolving } from "@/lib/reels";
+import { removeUpload } from "@/lib/uploads";
 
 async function clientIp() {
   const h = await headers();
@@ -51,8 +53,8 @@ export async function createReel(formData: FormData) {
   const rejected: string[] = [];
   // Add in reverse so the first link pasted ends up first in the list.
   for (const raw of [...urls].reverse()) {
-    const parsed = parseReelUrl(raw);
-    if (!parsed) {
+    const parsed = await resolveReelUrl(raw);
+    if (!parsed || needsResolving(parsed.url)) {
       rejected.push(raw);
       continue;
     }
@@ -80,7 +82,8 @@ export async function saveReel(formData: FormData) {
 
 export async function removeReel(formData: FormData) {
   await requireAdmin();
-  await deleteReel(Number(formData.get("id")));
+  const removed = await deleteReel(Number(formData.get("id")));
+  if (removed?.platform === "upload") await removeUpload(removed.url);
   revalidatePath("/admin");
   redirect("/admin?deleted=1");
 }

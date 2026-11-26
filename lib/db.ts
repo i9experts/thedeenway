@@ -84,9 +84,10 @@ export async function updateReel(id: number, fields: { title?: string; campus?: 
   ]);
 }
 
-export async function deleteReel(id: number) {
+export async function deleteReel(id: number): Promise<{ url: string; platform: string } | null> {
   await ready();
-  await pool().query("DELETE FROM reels WHERE id = $1", [id]);
+  const { rows } = await pool().query<{ url: string; platform: string }>("DELETE FROM reels WHERE id = $1 RETURNING url, platform", [id]);
+  return rows[0] ?? null;
 }
 
 export async function moveReel(id: number, direction: -1 | 1) {

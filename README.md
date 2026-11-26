@@ -41,5 +41,8 @@ It needs two Railway variables on the **thedeenway** service:
 | `DATABASE_URL` | Reference to the Railway **PostgreSQL** service's `DATABASE_URL` |
 | `ADMIN_PASSWORD` | A strong password (10+ characters) for staff |
 | `SESSION_SECRET` *(optional)* | Any long random text; adds extra protection to admin sessions |
+| `UPLOAD_DIR` | `/data/uploads` — needs a Railway **volume** mounted at `/data` (for uploaded reel videos) |
 
 The `reels` table is created automatically on first use.
+
+**Uploaded videos vs links.** Uploaded MP4s autoplay muted on every device. Facebook, YouTube and TikTok links autoplay muted through their embeds. Instagram does not allow autoplay on other websites, so Instagram reels play when tapped — upload the video instead for autoplay. Share links (`facebook.com/share/…`, `instagram.com/share/…`, `fb.watch`, `vm.tiktok.com`) are followed automatically to the real reel address.

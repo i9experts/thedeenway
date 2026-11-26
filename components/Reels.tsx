@@ -29,6 +29,7 @@ function PlatformIcon({ platform, className = "h-4 w-4" }: { platform: Platform;
     instagram: "M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm5.5-3.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z",
     youtube: "M23 7.2a3 3 0 00-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 001 7.2 31 31 0 00.5 12a31 31 0 00.5 4.8 3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 002.1-2.1 31 31 0 00.5-4.8 31 31 0 00-.5-4.8zM9.8 15.1V8.9l5.4 3.1z",
     tiktok: "M16.5 3c.4 2 1.7 3.4 3.8 3.6v3.2a7.3 7.3 0 01-3.8-1.1v6.6a5.8 5.8 0 11-5.8-5.8c.3 0 .6 0 .9.1v3.3a2.6 2.6 0 10 1.7 2.4V3z",
+    upload: "M12 2a10 10 0 100 20 10 10 0 000-20zm-2 6l6 4-6 4z",
   };
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
@@ -37,42 +38,76 @@ function PlatformIcon({ platform, className = "h-4 w-4" }: { platform: Platform;
   );
 }
 
-/** A reel card: a light preview that opens the real player when tapped. */
+/** A reel card: plays silently while on screen (where the platform allows it); tap opens the player with sound. */
 function ReelCard({ reel, t, onOpen, eager = false }: { reel: PublicReel; t: T; onOpen: () => void; eager?: boolean }) {
   const ref = useRef<HTMLButtonElement>(null);
-  const [visible, setVisible] = useState(eager);
+  const video = useRef<HTMLVideoElement>(null);
+  const [near, setNear] = useState(eager); // mount the preview once the card is close to the screen
+  const [onScreen, setOnScreen] = useState(false);
+
   useEffect(() => {
-    if (visible || !ref.current) return;
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setVisible(true), { rootMargin: "300px" });
+    if (!ref.current) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setNear(true);
+        setOnScreen(e.intersectionRatio > 0.35);
+      },
+      { rootMargin: "200px", threshold: [0, 0.35, 0.7] },
+    );
     io.observe(ref.current);
     return () => io.disconnect();
-  }, [visible]);
+  }, []);
+
+  // Uploaded videos: play only while visible, to save data and battery.
+  useEffect(() => {
+    const v = video.current;
+    if (!v) return;
+    if (onScreen) v.play().catch(() => undefined);
+    else v.pause();
+  }, [onScreen, near]);
+
+  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const autoplay = Boolean(reel.preview) && !reduced;
+  const name = reel.title || platformNames[reel.platform];
 
   return (
     <button
       ref={ref}
       type="button"
       onClick={onOpen}
+      aria-label={`${t.play}: ${name}`}
       className="group relative block aspect-[9/16] w-full overflow-hidden rounded-[1.25rem] bg-forest-900 text-start shadow-soft ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-lift focus-visible:-translate-y-1"
     >
-      {reel.thumb ? (
-        <img src={reel.thumb} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = "none")} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-      ) : visible ? (
-        // Facebook / Instagram / TikTok render their own preview frame.
-        <iframe src={reel.embed} title={reel.title || platformNames[reel.platform]} loading="lazy" tabIndex={-1} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full border-0" allow="encrypted-media" />
-      ) : (
-        <div className="pattern-dark absolute inset-0" />
+      {reel.thumb && <img src={reel.thumb} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = "none")} className="absolute inset-0 h-full w-full object-cover" />}
+      {!reel.thumb && !near && <div className="pattern-dark absolute inset-0" />}
+      {near && reel.platform === "upload" && (
+        <video ref={video} src={reel.preview ?? reel.embed} muted loop playsInline autoPlay={autoplay && onScreen} preload="metadata" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 via-transparent to-forest-950/30" />
-      <span className="absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/45 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
+      {near && reel.platform !== "upload" && (autoplay ? onScreen : !reel.thumb) && (
+        <iframe
+          src={autoplay ? reel.preview! : reel.embed}
+          title={name}
+          tabIndex={-1}
+          aria-hidden="true"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          className="pointer-events-none absolute inset-0 h-full w-full scale-[1.02] border-0"
+        />
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-950/85 via-transparent to-forest-950/25" />
+      <span className="absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/50 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
         <PlatformIcon platform={reel.platform} className="h-3.5 w-3.5" />
         {platformNames[reel.platform]}
       </span>
-      <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-forest-900 shadow-lg transition group-hover:scale-110 group-hover:bg-gold-300">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-        <span className="sr-only">{t.play}</span>
-      </span>
-      {reel.title && <span className="absolute inset-x-0 bottom-0 p-4 text-[0.95rem] font-semibold leading-snug text-white">{reel.title}</span>}
+      {autoplay ? (
+        <span className="absolute end-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition group-hover:bg-gold-500 group-hover:text-forest-950" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" /></svg>
+        </span>
+      ) : (
+        <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-forest-900 shadow-lg transition group-hover:scale-110 group-hover:bg-gold-300" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+        </span>
+      )}
+      {reel.title && <span className="pointer-events-none absolute inset-x-0 bottom-0 p-4 text-[0.95rem] font-semibold leading-snug text-white">{reel.title}</span>}
     </button>
   );
 }
@@ -98,11 +133,17 @@ function Player({ reel, t, onClose }: { reel: PublicReel; t: T; onClose: () => v
           ✕ {t.close}
         </button>
         <div className="aspect-[9/16] h-[min(78vh,44rem)] max-w-[92vw] overflow-hidden rounded-2xl bg-black shadow-2xl">
-          <iframe src={reel.embed} title={reel.title || platformNames[reel.platform]} className="h-full w-full border-0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen />
+          {reel.platform === "upload" ? (
+            <video src={reel.embed} controls autoPlay playsInline className="h-full w-full object-contain" />
+          ) : (
+            <iframe src={reel.embed} title={reel.title || platformNames[reel.platform]} className="h-full w-full border-0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen />
+          )}
         </div>
-        <a href={reel.url} target="_blank" rel="noopener" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-white/85 hover:text-white">
-          <PlatformIcon platform={reel.platform} /> {t.watchOn} {platformNames[reel.platform]} ↗
-        </a>
+        {reel.platform !== "upload" && (
+          <a href={reel.url} target="_blank" rel="noopener" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-white/85 hover:text-white">
+            <PlatformIcon platform={reel.platform} /> {t.watchOn} {platformNames[reel.platform]} ↗
+          </a>
+        )}
       </div>
     </div>
   );

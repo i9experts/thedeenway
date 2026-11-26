@@ -2,6 +2,7 @@ import { adminConfigured, isAdmin } from "@/lib/auth";
 import { dbConfigured, listReels } from "@/lib/db";
 import { embedFor, platformNames, type Reel } from "@/lib/reels";
 import { createReel, login, logout, removeReel, reorderReel, saveReel } from "./actions";
+import { uploadsConfigured } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,14 @@ function Notice({ tone, children }: { tone: "ok" | "warn" | "error"; children: R
   const cls = { ok: "border-lime-400 bg-lime-100 text-forest-900", warn: "border-gold-300 bg-gold-100 text-forest-950", error: "border-red-200 bg-red-50 text-red-800" }[tone];
   return <div role="status" className={`mb-6 rounded-xl border px-4 py-3 ${cls}`}>{children}</div>;
 }
+
+const uploadErrors: Record<string, string> = {
+  setup: "Video uploads are not switched on yet — see the instructions in the upload box.",
+  size: "That video is larger than 150 MB. Please export a shorter or smaller version.",
+  type: "Please upload an MP4, WebM or MOV video.",
+  missing: "Please choose a video file.",
+  read: "The upload was interrupted. Please try again.",
+};
 
 const errors: Record<string, string> = {
   password: "That password is not correct.",
@@ -109,16 +118,46 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       <p className="mt-2 text-muted">Paste links to reels you have already published. They appear in the website&apos;s reel gallery, and those marked “Home page” scroll on the home page.</p>
 
       <div className="mt-6">
-        {q.added && <Notice tone="ok">{q.added === "1" ? "Reel added." : `${q.added} reels added.`}{q.rejected ? ` ${q.rejected} link(s) were not recognised — use Facebook, Instagram, YouTube or TikTok reel links.` : ""}</Notice>}
-        {!q.added && q.rejected && <Notice tone="error">That link was not recognised. Use a Facebook, Instagram, YouTube or TikTok reel link.</Notice>}
+        {q.added && <Notice tone="ok">{q.added === "1" ? "Reel added." : `${q.added} reels added.`}{q.rejected ? ` ${q.rejected} link(s) could not be used. Use a Facebook, Instagram, YouTube or TikTok reel link. If it was a “share” link, open the reel in a browser and copy the address from the address bar instead.` : ""}</Notice>}
+        {!q.added && q.rejected && <Notice tone="error">That link could not be used. Use a Facebook, Instagram, YouTube or TikTok reel link. If it was a “share” link, open the reel in a browser and copy the address from the address bar instead.</Notice>}
         {q.saved && <Notice tone="ok">Changes saved.</Notice>}
         {q.deleted && <Notice tone="ok">Reel removed.</Notice>}
+        {q.uploadError && <Notice tone="error">{uploadErrors[q.uploadError] ?? "The upload did not work. Please try again."}</Notice>}
         {dbError && <Notice tone="error">The database could not be reached. Check the Postgres service in Railway.</Notice>}
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[24rem_1fr]">
-        <form action={createReel} className="card h-fit p-6 lg:sticky lg:top-6">
-          <h2 className="text-xl font-semibold">Add reels</h2>
+        <div className="h-fit space-y-6 lg:sticky lg:top-6">
+        <form action="/admin/upload" method="post" encType="multipart/form-data" className="card p-6">
+          <h2 className="text-xl font-semibold">Upload a reel video</h2>
+          <p className="mt-1 text-sm text-muted">Best option: uploaded videos play automatically (muted, on a loop) — like Instagram — on every phone, with no login.</p>
+          {uploadsConfigured() ? (
+            <>
+              <label htmlFor="video" className="mt-4 block font-semibold text-forest-900">Video file</label>
+              <input id="video" name="video" type="file" required accept="video/mp4,video/webm,video/quicktime" className="mt-1.5 block w-full text-sm file:me-3 file:rounded-full file:border-0 file:bg-forest-800 file:px-4 file:py-2 file:font-semibold file:text-white" />
+              <p className="mt-1.5 text-xs text-muted">MP4 recommended, vertical (9:16), up to 150 MB. Download it from your phone or from Meta Business Suite.</p>
+              <label htmlFor="vtitle" className="mt-4 block font-semibold text-forest-900">Title <span className="font-normal text-muted">(optional)</span></label>
+              <input id="vtitle" name="title" maxLength={140} className="mt-1.5 block w-full rounded-xl border border-line bg-white px-3 py-2.5 outline-none focus:border-forest-600 focus:ring-4 focus:ring-lime-100" />
+              <label htmlFor="vcampus" className="mt-4 block font-semibold text-forest-900">Campus</label>
+              <select id="vcampus" name="campus" className="mt-1.5 block w-full rounded-xl border border-line bg-white px-3 py-2.5">
+                {campusOptions.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+              </select>
+              <label className="mt-4 flex items-center gap-2.5">
+                <input type="checkbox" name="showOnHome" defaultChecked className="h-4 w-4 accent-[#156a3d]" />
+                <span className="font-semibold text-forest-900">Show on home page</span>
+              </label>
+              <button className="btn btn-primary mt-6 w-full">Upload</button>
+            </>
+          ) : (
+            <ol className="mt-4 list-decimal space-y-1.5 ps-5 text-sm text-muted">
+              <li>In Railway, open the <b>thedeenway</b> service → <b>Settings</b> → <b>Volumes</b> → add a volume mounted at <code className="rounded bg-cream px-1">/data</code>.</li>
+              <li>In <b>Variables</b>, add <code className="rounded bg-cream px-1">UPLOAD_DIR</code> = <code className="rounded bg-cream px-1">/data/uploads</code>.</li>
+              <li>After the redeploy, the upload form appears here.</li>
+            </ol>
+          )}
+        </form>
+        <form action={createReel} className="card p-6">
+          <h2 className="text-xl font-semibold">Or add reel links</h2>
           <label htmlFor="urls" className="mt-4 block font-semibold text-forest-900">Reel link(s)</label>
           <textarea id="urls" name="urls" required rows={4} placeholder={"https://www.facebook.com/reel/…\nhttps://www.instagram.com/reel/…"} className="mt-1.5 block w-full rounded-xl border border-line bg-white px-3 py-2.5 font-mono text-sm outline-none focus:border-forest-600 focus:ring-4 focus:ring-lime-100" />
           <p className="mt-1.5 text-xs text-muted">One per line. On Facebook: open the reel → Share → Copy link.</p>
@@ -133,7 +172,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <span className="font-semibold text-forest-900">Show on home page</span>
           </label>
           <button className="btn btn-primary mt-6 w-full">Add</button>
+          <p className="mt-3 text-xs text-muted">Facebook, YouTube and TikTok reels play muted on the website automatically. Instagram does not allow this on other websites — visitors tap to play, so upload Instagram reels as videos instead.</p>
         </form>
+        </div>
 
         <section>
           <p className="mb-4 text-sm text-muted">{reels.length} reel(s) · {homeCount} on the home page · newest first</p>
@@ -146,7 +187,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                 return (
                   <li key={r.id} className="card flex flex-col gap-4 p-4 sm:flex-row">
                     <div className="flex aspect-[9/16] w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-forest-900 text-xs font-bold text-white">
-                      {thumb ? <img src={thumb} alt="" className="h-full w-full object-cover" /> : platformNames[r.platform]}
+                      {r.platform === "upload" ? <video src={`${r.url}#t=0.5`} muted playsInline preload="metadata" className="h-full w-full object-cover" /> : thumb ? <img src={thumb} alt="" className="h-full w-full object-cover" /> : platformNames[r.platform]}
                     </div>
                     <form action={saveReel} className="flex-1 space-y-3">
                       <input type="hidden" name="id" value={r.id} />
