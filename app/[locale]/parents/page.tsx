@@ -25,7 +25,7 @@ export default async function Parents(props: LocaleParams) {
       </PageHero>
 
       {/* Portal preview */}
-      <Section>
+      <Section id="portal">
         <div className="relative overflow-hidden rounded-[2rem] bg-forest-900 p-7 text-white sm:p-12">
           <div className="pattern-dark absolute inset-0" />
           <div className="relative">
@@ -50,7 +50,7 @@ export default async function Parents(props: LocaleParams) {
       </Section>
 
       {/* Essentials */}
-      <Section tint>
+      <Section tint id="essentials">
         <SectionHead title={a.essentialsTitle} />
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {a.essentials.map((e) => (
@@ -67,7 +67,7 @@ export default async function Parents(props: LocaleParams) {
       </Section>
 
       {/* Downloads */}
-      <Section>
+      <Section id="downloads">
         <SectionHead title={t.admissions.downloadsTitle} />
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
           {downloads.map((d) => (

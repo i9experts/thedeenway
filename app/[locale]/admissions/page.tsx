@@ -18,7 +18,7 @@ export default async function Admissions(props: LocaleParams) {
       </PageHero>
 
       {/* Steps */}
-      <Section>
+      <Section id="steps">
         <SectionHead title={a.stepsTitle} />
         <ol className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {a.steps.map((s, i) => (
@@ -91,7 +91,7 @@ export default async function Admissions(props: LocaleParams) {
       </Section>
 
       {/* Downloads */}
-      <Section>
+      <Section id="downloads">
         <SectionHead title={a.downloadsTitle} />
         <ul className="mt-8 grid gap-4 sm:grid-cols-2">
           {downloads.map((d) => (
@@ -110,7 +110,7 @@ export default async function Admissions(props: LocaleParams) {
       </Section>
 
       {/* FAQ */}
-      <Section tint>
+      <Section tint id="faq">
         <div className="mx-auto max-w-3xl">
           <SectionHead title={a.faqTitle} center />
           <div className="mt-10 divide-y divide-line rounded-[var(--radius-card)] border border-line bg-white">

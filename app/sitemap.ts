@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n";
 import { site } from "@/lib/site";
 
-const paths = ["", "/about", "/academics", "/admissions", "/admissions/apply", "/campuses", "/parents", "/news", "/contact"];
+const paths = ["", "/about", "/academics", "/admissions", "/admissions/apply", "/campuses", "/parents", "/news", "/reels", "/contact"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return paths.flatMap((path) =>

@@ -13,7 +13,7 @@ export default async function About(props: LocaleParams) {
       <PageHero eyebrow={a.eyebrow} title={a.title} lead={a.lead} image="assembly-2" />
 
       {/* Vision */}
-      <Section>
+      <Section id="vision">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="eyebrow">{a.visionTitle}</p>
@@ -34,7 +34,7 @@ export default async function About(props: LocaleParams) {
       </Section>
 
       {/* Mission */}
-      <section className="relative overflow-hidden bg-forest-900 py-16 text-white sm:py-24">
+      <section id="mission" className="relative overflow-hidden bg-forest-900 py-16 text-white sm:py-24">
         <div className="pattern-dark absolute inset-0" />
         <div className="wrap relative">
           <p className="eyebrow !text-gold-300 before:!bg-gold-300">{a.missionTitle}</p>
@@ -52,7 +52,7 @@ export default async function About(props: LocaleParams) {
       </section>
 
       {/* Facilities */}
-      <Section>
+      <Section id="facilities">
         <SectionHead title={a.facilitiesTitle} />
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {a.facilities.map((f) => (
@@ -70,7 +70,7 @@ export default async function About(props: LocaleParams) {
       </Section>
 
       {/* Safety */}
-      <Section tint>
+      <Section tint id="safety">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <SectionHead title={a.safetyTitle} />

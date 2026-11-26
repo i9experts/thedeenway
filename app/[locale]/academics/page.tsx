@@ -52,7 +52,7 @@ export default async function Academics(props: LocaleParams) {
       </Section>
 
       {/* Tarbiyah */}
-      <Section tint>
+      <Section tint id="tarbiyah">
         <SectionHead title={a.tarbiyahTitle} />
         <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {a.tarbiyah.map((x, i) => (
@@ -82,7 +82,7 @@ export default async function Academics(props: LocaleParams) {
       </section>
 
       {/* Co-curricular */}
-      <Section>
+      <Section id="cocurricular">
         <SectionHead title={a.cocurricularTitle} />
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {a.cocurricular.map((c) => (

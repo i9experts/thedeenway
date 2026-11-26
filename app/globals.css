@@ -127,3 +127,19 @@ html[lang="ur"] body :is(h1, h2, h3, h4) { line-height: 1.85 !important; }
 html[lang="ar"] body :where(p, li, a, span, dd, dt, td, th, label, summary, blockquote, figcaption, small) { line-height: 1.85 !important; }
 html[lang="ar"] body :is(h1, h2, h3, h4) { line-height: 1.45 !important; }
 html[lang="ur"] .ltr, html[lang="ar"] .ltr { font-family: var(--font-sans); }
+
+/* Hero slider */
+.kenburns { animation: kenburns 9s ease-out both; transform-origin: 60% 40%; }
+@keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
+.slide-in { animation: slideIn .8s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.hero-progress { animation-name: heroProgress; animation-timing-function: linear; animation-fill-mode: both; }
+@keyframes heroProgress { from { width: 0; } to { width: 100%; } }
+
+/* Reels strip: hide scrollbar but keep it scrollable */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns, .slide-in { animation: none !important; opacity: 1 !important; transform: none !important; }
+}

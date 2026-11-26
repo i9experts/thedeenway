@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getDict } from "@/content";
-import { isLocale, type Locale } from "@/lib/i18n";
+import { isLocale, localeInfo, type Locale } from "@/lib/i18n";
+import HeroSlider from "@/components/HeroSlider";
+import { ReelsStrip } from "@/components/Reels";
 import { campuses } from "@/lib/site";
 import { Arrow, Photo, Section, SectionHead, Star, TextLink } from "@/components/blocks";
 import { notFound } from "next/navigation";
@@ -15,30 +17,28 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative isolate overflow-hidden bg-forest-950">
-        <Photo name="assembly" alt="" priority sizes="100vw" className="absolute inset-0 -z-10 h-full w-full !rounded-none opacity-55" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-950/70 via-forest-950/55 to-forest-950/95 rtl:bg-gradient-to-b" />
-        <div className="pattern-dark absolute inset-0 -z-10 opacity-60" />
-        <div className="wrap flex min-h-[78vh] flex-col justify-end pb-14 pt-28 sm:pb-20">
-          <div className="reveal max-w-3xl">
-            <p className="eyebrow !text-gold-300 before:!bg-gold-300">{h.eyebrow}</p>
-            <h1 className="mt-5 text-[2.6rem] font-semibold leading-[1.05] text-white sm:text-6xl lg:text-7xl">{h.title}</h1>
-            <p className="mt-6 max-w-2xl text-lg text-white/85 sm:text-xl">{h.lead}</p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href={p("/admissions/apply")} className="btn btn-gold">
-                {h.ctaApply} <Arrow />
-              </Link>
-              <Link href={p("/about")} className="btn btn-light">
-                {h.ctaVisit}
-              </Link>
-            </div>
-          </div>
+      <HeroSlider slides={t.heroSlides} ui={t.heroUi} locale={locale} rtl={localeInfo[locale].dir === "rtl"} />
+
+      {/* Quick links */}
+      <nav aria-label={t.nav.menu} className="relative z-20 -mt-14 sm:-mt-16">
+        <div className="wrap">
+          <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-[1.25rem] bg-line shadow-lift ring-1 ring-line sm:grid-cols-3 lg:grid-cols-5">
+            {t.quickLinks.map((q, i) => (
+              <li key={q.href} className={`bg-white ${i === 0 ? "col-span-2 sm:col-span-1" : ""}`}>
+                <Link href={q.href.startsWith("/spd") ? q.href : p(q.href)} className={`group flex h-full items-center gap-3 px-4 py-4 transition hover:bg-cream sm:px-5 sm:py-5 ${i === 0 ? "bg-gold-100" : ""}`}>
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition group-hover:scale-110 ${i === 0 ? "bg-gold-500 text-forest-950" : "bg-lime-100 text-forest-700"}`}>
+                    <QuickIcon name={q.icon} />
+                  </span>
+                  <span className="text-[0.95rem] font-semibold leading-tight text-forest-950">{q.label}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-      </section>
+      </nav>
 
       {/* Stats */}
-      <section className="relative z-10 -mt-1 border-b border-line bg-cream">
+      <section className="border-b border-line bg-cream pt-6">
         <div className="wrap grid grid-cols-2 gap-px overflow-hidden lg:grid-cols-4">
           {h.stats.map((s) => (
             <div key={s.label} className="px-2 py-8 sm:px-6">
@@ -142,8 +142,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </Section>
 
+      {/* Reels */}
+      <ReelsStrip t={t.reels} locale={locale} rtl={localeInfo[locale].dir === "rtl"} />
+
       {/* Event */}
-      <section className="pb-16 sm:pb-24">
+      <section className="py-16 sm:py-24">
         <div className="wrap">
           <div className="pattern relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-gold-300 bg-gold-100 p-8 sm:p-12 lg:grid-cols-[auto_1fr_auto]">
             <img src="/brand/tree.png" alt="" width={660} height={740} className="mx-auto w-28 sm:w-36" />
@@ -207,5 +210,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </Section>
     </>
+  );
+}
+
+function QuickIcon({ name }: { name: string }) {
+  const d: Record<string, string> = {
+    apply: "M14 3v4a1 1 0 001 1h4M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2zM9 13h6M9 17h4",
+    fees: "M3 7h18v10H3zM3 11h18M7 15h3",
+    campus: "M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z",
+    portal: "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z",
+    reels: "M4 4h16v16H4zM4 9h16M9 4l2 5M15 4l2 5M10.5 12.5v5l4-2.5z",
+  };
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={d[name] ?? d.apply} />
+    </svg>
   );
 }

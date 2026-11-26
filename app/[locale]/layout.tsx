@@ -68,7 +68,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   return (
     <html lang={info.htmlLang} dir={info.dir}>
       <body>
-        <Header locale={locale} nav={t.nav} logoAlt={t.meta.siteName} />
+        <Header locale={locale} t={{ nav: t.nav, menu: t.menu, campusNames: t.campusNames, common: t.common, meta: t.meta }} />
         <main id="main">{children}</main>
         <Footer locale={locale} t={t} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
