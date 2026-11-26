@@ -55,3 +55,10 @@ The portal runs in **demo mode** on a sample family until Eldermin's integration
 - Data comes only through the `ElderminApi` interface in `lib/eldermin/types.ts`. Today `lib/eldermin/index.ts` returns the sample data in `mock.ts`; the real client plugs in there.
 - Not built yet: real parent sign-in (mobile number + one-time code, needs an SMS/WhatsApp provider), online payment, and saving consent forms.
 - Set `SESSION_SECRET` in Railway before real family data is connected.
+
+## Online admissions
+
+- Parents apply at `/admissions/apply` (four steps, optional documents) and track progress at `/admissions/status` with their application number and mobile number.
+- Staff manage applications at `/admin/admissions`: search and filter, open an application, set its status and assessment time, write a message for the parent and an internal note, open uploaded documents, and download a CSV.
+- Needs `DATABASE_URL`. Without it the apply page falls back to the WhatsApp registration form. Document upload also needs `UPLOAD_DIR` (documents are stored privately and served only to signed-in staff).
+- Not built yet: online fee payment, automatic SMS/WhatsApp/email notifications, and sending accepted applications to Eldermin.

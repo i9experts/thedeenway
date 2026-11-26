@@ -7,6 +7,8 @@ import { clearFailures, endSession, isAdmin, passwordMatches, recordFailure, sta
 import { addReel, deleteReel, moveReel, updateReel } from "@/lib/db";
 import { resolveReelUrl } from "@/lib/resolve";
 import { needsResolving } from "@/lib/reels";
+import { updateApplication } from "@/lib/admissions";
+import { STATUSES, type AppStatus } from "@/lib/admissionsShared";
 import { removeUpload } from "@/lib/uploads";
 
 async function clientIp() {
@@ -94,4 +96,21 @@ export async function reorderReel(formData: FormData) {
   await moveReel(Number(formData.get("id")), dir);
   revalidatePath("/admin");
   redirect("/admin");
+}
+
+export async function saveApplication(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const status = String(formData.get("status"));
+  if (!Number.isInteger(id) || !(STATUSES as readonly string[]).includes(status)) redirect("/admin/admissions");
+  const at = String(formData.get("assessment_at") ?? "");
+  await updateApplication(id, {
+    status: status as AppStatus,
+    // datetime-local value is school local time (Pakistan, UTC+5)
+    assessment_at: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(at) ? `${at}:00+05:00` : "",
+    public_message: String(formData.get("public_message") ?? "").trim().slice(0, 1000),
+    internal_note: String(formData.get("internal_note") ?? "").trim().slice(0, 2000),
+  });
+  revalidatePath("/admin/admissions");
+  redirect(`/admin/admissions/${id}?saved=1`);
 }

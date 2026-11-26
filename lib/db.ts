@@ -9,7 +9,7 @@ export function dbConfigured() {
   return Boolean(process.env.DATABASE_URL);
 }
 
-function pool(): Pool {
+export function pool(): Pool {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
   if (!globalForDb.pgPool) {
     const url = process.env.DATABASE_URL;

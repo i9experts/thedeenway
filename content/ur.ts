@@ -359,6 +359,7 @@ const ur: Dict = {
       links: [
         { label: "آن لائن رجسٹریشن", desc: "دو منٹ میں آغاز", href: "/admissions/apply" },
         { label: "داخلے کا طریقہ", desc: "چار آسان مراحل", href: "/admissions#steps" },
+        { label: "درخواست کی صورتحال", desc: "اپنی درخواست کی پیش رفت دیکھیں", href: "/admissions/status" },
         { label: "فیس کا ڈھانچہ", desc: "داخلہ اور ماہانہ فیس", href: "/admissions#fees" },
         { label: "ٹیسٹ کے خاکے", desc: "نصاب ڈاؤن لوڈ کریں", href: "/admissions#downloads" },
         { label: "سوالات و جوابات", desc: "نئے خاندانوں کے لیے", href: "/admissions#faq" },

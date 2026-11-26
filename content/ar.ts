@@ -359,6 +359,7 @@ const ar: Dict = {
       links: [
         { label: "التسجيل الإلكتروني", desc: "ابدأ في دقيقتين", href: "/admissions/apply" },
         { label: "خطوات التقديم", desc: "أربع خطوات بسيطة", href: "/admissions#steps" },
+        { label: "تابع طلبك", desc: "تحقق من حالة طلبك", href: "/admissions/status" },
         { label: "هيكل الرسوم", desc: "رسوم القبول والرسوم الشهرية", href: "/admissions#fees" },
         { label: "مخططات الاختبارات", desc: "تنزيل المناهج", href: "/admissions#downloads" },
         { label: "الأسئلة الشائعة", desc: "إجابات للأسر الجديدة", href: "/admissions#faq" },

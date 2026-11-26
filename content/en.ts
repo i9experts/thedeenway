@@ -357,6 +357,7 @@ const en = {
       links: [
         { label: "Register online", desc: "Start in under two minutes", href: "/admissions/apply" },
         { label: "How to apply", desc: "Four simple steps", href: "/admissions#steps" },
+        { label: "Track application", desc: "Check your application status", href: "/admissions/status" },
         { label: "Fee structure", desc: "Admission and monthly fees", href: "/admissions#fees" },
         { label: "Assessment outlines", desc: "Download syllabi", href: "/admissions#downloads" },
         { label: "FAQs", desc: "Answers for new families", href: "/admissions#faq" },

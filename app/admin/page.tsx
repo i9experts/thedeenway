@@ -1,7 +1,8 @@
 import { adminConfigured, isAdmin } from "@/lib/auth";
 import { dbConfigured, listReels } from "@/lib/db";
 import { embedFor, platformNames, type Reel } from "@/lib/reels";
-import { createReel, login, logout, removeReel, reorderReel, saveReel } from "./actions";
+import AdminShell from "@/components/admin/Shell";
+import { createReel, login, removeReel, reorderReel, saveReel } from "./actions";
 import { uploadsConfigured } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
@@ -12,30 +13,6 @@ const campusOptions = [
   ["ansari", "A.A. Ansari Campus"],
   ["faisalabad", "Faisalabad Campus"],
 ] as const;
-
-function Shell({ children, signedIn = false }: { children: React.ReactNode; signedIn?: boolean }) {
-  return (
-    <div className="min-h-screen">
-      <header className="border-b border-line bg-white">
-        <div className="wrap flex h-16 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/brand/logo.png" alt="The Deenway School" className="h-9 w-auto" />
-            <span className="rounded-full bg-forest-800 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-white">Admin</span>
-          </div>
-          <div className="flex items-center gap-4 text-sm">
-            <a href="/en" target="_blank" className="font-semibold text-forest-700 hover:underline">View website ↗</a>
-            {signedIn && (
-              <form action={logout}>
-                <button className="rounded-full border border-line px-3 py-1.5 font-semibold hover:bg-cream">Sign out</button>
-              </form>
-            )}
-          </div>
-        </div>
-      </header>
-      <main className="wrap py-10">{children}</main>
-    </div>
-  );
-}
 
 function Notice({ tone, children }: { tone: "ok" | "warn" | "error"; children: React.ReactNode }) {
   const cls = { ok: "border-lime-400 bg-lime-100 text-forest-900", warn: "border-gold-300 bg-gold-100 text-forest-950", error: "border-red-200 bg-red-50 text-red-800" }[tone];
@@ -61,20 +38,20 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   if (!adminConfigured()) {
     return (
-      <Shell>
+      <AdminShell>
         <div className="card mx-auto max-w-xl p-8">
           <h1 className="text-2xl font-semibold">Admin panel not switched on yet</h1>
           <p className="mt-3 text-muted">
             In Railway, open the <b>thedeenway</b> service → <b>Variables</b>, and add <code className="rounded bg-cream px-1.5">ADMIN_PASSWORD</code> with a strong password (at least 10 characters). The site redeploys automatically; then come back to this page.
           </p>
         </div>
-      </Shell>
+      </AdminShell>
     );
   }
 
   if (!(await isAdmin())) {
     return (
-      <Shell>
+      <AdminShell>
         <form action={login} className="card mx-auto max-w-md p-8">
           <h1 className="text-2xl font-semibold">Sign in</h1>
           <p className="mt-2 text-muted">Manage the reels shown on the website.</p>
@@ -83,13 +60,13 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           <input id="password" name="password" type="password" required autoComplete="current-password" autoFocus className="mt-1.5 block w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-forest-600 focus:ring-4 focus:ring-lime-100" />
           <button className="btn btn-primary mt-6 w-full">Sign in</button>
         </form>
-      </Shell>
+      </AdminShell>
     );
   }
 
   if (!dbConfigured()) {
     return (
-      <Shell signedIn>
+      <AdminShell signedIn tab="reels">
         <div className="card mx-auto max-w-xl p-8">
           <h1 className="text-2xl font-semibold">Connect a database</h1>
           <ol className="mt-4 list-decimal space-y-2 ps-5 text-muted">
@@ -98,7 +75,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <li>Wait for the redeploy, then reload this page.</li>
           </ol>
         </div>
-      </Shell>
+      </AdminShell>
     );
   }
 
@@ -113,7 +90,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const homeCount = reels.filter((r) => r.showOnHome).length;
 
   return (
-    <Shell signedIn>
+    <AdminShell signedIn tab="reels">
       <h1 className="text-3xl font-semibold">Reels</h1>
       <p className="mt-2 text-muted">Paste links to reels you have already published. They appear in the website&apos;s reel gallery, and those marked “Home page” scroll on the home page.</p>
 
@@ -218,6 +195,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           )}
         </section>
       </div>
-    </Shell>
+    </AdminShell>
   );
 }
