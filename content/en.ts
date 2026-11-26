@@ -366,7 +366,7 @@ const en = {
     parents: {
       intro: "Everything Deenway families need, and soon the Parent Portal.",
       links: [
-        { label: "Parent Portal", desc: "Coming soon", href: "/parents#portal" },
+        { label: "Parent Portal", desc: "Coming soon", href: "/portal" },
         { label: "Essentials", desc: "Attendance, pick-up, health", href: "/parents#essentials" },
         { label: "Parents' Handbook", desc: "Policies and procedures", href: "/parents#downloads" },
         { label: "Contact your campus", desc: "Phones, WhatsApp, maps", href: "/contact" },
@@ -395,7 +395,7 @@ const en = {
     { label: "Register online", href: "/admissions/apply", icon: "apply" },
     { label: "Fee structure", href: "/admissions#fees", icon: "fees" },
     { label: "Our campuses", href: "/campuses", icon: "campus" },
-    { label: "Parent Portal", href: "/parents#portal", icon: "portal" },
+    { label: "Parent Portal", href: "/portal", icon: "portal" },
     { label: "Reel gallery", href: "/reels", icon: "reels" },
   ],
   reels: {

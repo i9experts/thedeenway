@@ -368,7 +368,7 @@ const ar: Dict = {
     parents: {
       intro: "كل ما تحتاجه أسر دين واي، وقريبًا بوابة أولياء الأمور.",
       links: [
-        { label: "بوابة أولياء الأمور", desc: "قريبًا", href: "/parents#portal" },
+        { label: "بوابة أولياء الأمور", desc: "قريبًا", href: "/portal" },
         { label: "معلومات أساسية", desc: "الحضور والاستلام والصحة", href: "/parents#essentials" },
         { label: "دليل أولياء الأمور", desc: "السياسات والإجراءات", href: "/parents#downloads" },
         { label: "تواصل مع فرعك", desc: "الهاتف وواتساب والخرائط", href: "/contact" },
@@ -397,7 +397,7 @@ const ar: Dict = {
     { label: "التسجيل الإلكتروني", href: "/admissions/apply", icon: "apply" },
     { label: "هيكل الرسوم", href: "/admissions#fees", icon: "fees" },
     { label: "فروعنا", href: "/campuses", icon: "campus" },
-    { label: "بوابة أولياء الأمور", href: "/parents#portal", icon: "portal" },
+    { label: "بوابة أولياء الأمور", href: "/portal", icon: "portal" },
     { label: "معرض المقاطع", href: "/reels", icon: "reels" },
   ],
   reels: {

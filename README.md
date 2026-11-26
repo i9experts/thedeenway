@@ -46,3 +46,12 @@ It needs two Railway variables on the **thedeenway** service:
 The `reels` table is created automatically on first use.
 
 **Uploaded videos vs links.** Uploaded MP4s autoplay muted on every device. Facebook, YouTube and TikTok links autoplay muted through their embeds. Instagram does not allow autoplay on other websites, so Instagram reels play when tapped — upload the video instead for autoplay. Share links (`facebook.com/share/…`, `instagram.com/share/…`, `fb.watch`, `vm.tiktok.com`) are followed automatically to the real reel address.
+
+## Parent Portal (`/portal`)
+
+The portal runs in **demo mode** on a sample family until Eldermin's integration API exists.
+
+- Screens: `app/[locale]/portal/` (overview, attendance, homework, results, fees, notices with the SPD consent form). Text: `content/portal.ts`.
+- Data comes only through the `ElderminApi` interface in `lib/eldermin/types.ts`. Today `lib/eldermin/index.ts` returns the sample data in `mock.ts`; the real client plugs in there.
+- Not built yet: real parent sign-in (mobile number + one-time code, needs an SMS/WhatsApp provider), online payment, and saving consent forms.
+- Set `SESSION_SECRET` in Railway before real family data is connected.

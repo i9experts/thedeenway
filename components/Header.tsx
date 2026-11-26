@@ -148,7 +148,7 @@ export default function Header({ locale, t }: { locale: Locale; t: HeaderText })
           </div>
           <div className="flex items-center gap-5">
             <Link href={p("/reels")} className="hover:text-white">{t.menu.utility.reels}</Link>
-            <Link href={p("/parents#portal")} className="inline-flex items-center gap-1.5 hover:text-white">
+            <Link href={p("/portal")} className="inline-flex items-center gap-1.5 hover:text-white">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" /></svg>
               {t.menu.utility.portal}
             </Link>
@@ -308,7 +308,7 @@ export default function Header({ locale, t }: { locale: Locale; t: HeaderText })
             </ul>
             <div className="mt-6 grid gap-3">
               <Link href={p("/admissions/apply")} className="btn btn-gold w-full">{t.nav.apply}</Link>
-              <Link href={p("/parents#portal")} className="btn btn-ghost w-full">{t.menu.utility.portal}</Link>
+              <Link href={p("/portal")} className="btn btn-ghost w-full">{t.menu.utility.portal}</Link>
               <a href="tel:+923342221788" className="btn btn-ghost w-full"><span className="ltr">+92 334 222 1788</span></a>
             </div>
             <div className="mt-6 flex justify-center">

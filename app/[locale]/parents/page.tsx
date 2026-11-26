@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { portalDict } from "@/content/portal";
 import { load, pageMeta, type LocaleParams } from "@/lib/page";
 import { downloads } from "@/lib/site";
 import { DownloadIcon, PageHero, Section, SectionHead } from "@/components/blocks";
@@ -14,7 +16,7 @@ const icons = [
 ];
 
 export default async function Parents(props: LocaleParams) {
-  const { t } = await load(props);
+  const { t, p, locale } = await load(props);
   const a = t.parents;
   const handbook = downloads[0];
 
@@ -45,6 +47,7 @@ export default async function Parents(props: LocaleParams) {
               ))}
             </ul>
             <p className="mt-8 max-w-3xl text-white/70">{a.portalNote}</p>
+            <Link href={p("/portal")} className="btn btn-gold mt-6">{portalDict(locale).signIn.demoCta}</Link>
           </div>
         </div>
       </Section>

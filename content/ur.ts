@@ -368,7 +368,7 @@ const ur: Dict = {
     parents: {
       intro: "دین وے کے خاندانوں کے لیے سب کچھ، اور جلد پیرنٹ پورٹل۔",
       links: [
-        { label: "پیرنٹ پورٹل", desc: "جلد آ رہا ہے", href: "/parents#portal" },
+        { label: "پیرنٹ پورٹل", desc: "جلد آ رہا ہے", href: "/portal" },
         { label: "ضروری باتیں", desc: "حاضری، چھٹی، صحت", href: "/parents#essentials" },
         { label: "والدین کی ہینڈ بک", desc: "پالیسیاں اور طریقہ کار", href: "/parents#downloads" },
         { label: "کیمپس سے رابطہ", desc: "فون، واٹس ایپ، نقشہ", href: "/contact" },
@@ -397,7 +397,7 @@ const ur: Dict = {
     { label: "آن لائن رجسٹریشن", href: "/admissions/apply", icon: "apply" },
     { label: "فیس کا ڈھانچہ", href: "/admissions#fees", icon: "fees" },
     { label: "ہمارے کیمپس", href: "/campuses", icon: "campus" },
-    { label: "پیرنٹ پورٹل", href: "/parents#portal", icon: "portal" },
+    { label: "پیرنٹ پورٹل", href: "/portal", icon: "portal" },
     { label: "ریل گیلری", href: "/reels", icon: "reels" },
   ],
   reels: {

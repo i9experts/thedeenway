@@ -192,7 +192,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <h2 className="mt-3 text-3xl font-semibold">{h.portalTitle}</h2>
             <p className="mt-4 flex-1 text-lg text-muted">{h.portalText}</p>
             <div className="mt-8">
-              <TextLink href={p("/parents")}>{h.portalCta}</TextLink>
+              <TextLink href={p("/portal")}>{h.portalCta}</TextLink>
             </div>
           </div>
           <div className="relative overflow-hidden rounded-[var(--radius-card)] bg-forest-800 p-8 text-white sm:p-10">
