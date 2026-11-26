@@ -390,7 +390,7 @@ const en = {
     { image: "cocurricular", eyebrow: "Save the date · 19 December 2026", title: "Students Performance Day — Nurture on Values", text: "An evening of solo, pair and group performances celebrating confidence, creativity and character.", cta: "Event details", href: "/spd-2026/index.html" },
     { image: "sports", eyebrow: "Student life", title: "Faith, friendship and fair play", text: "Sports Day, debates, dramatic play and community service — Tarbiyah in action.", cta: "School life", href: "/news" },
   ],
-  heroUi: { prev: "Previous slide", next: "Next slide", pause: "Pause slideshow", play: "Play slideshow", slide: "Slide" },
+  heroUi: { hint: "Move your cursor — bring the light", prev: "Previous slide", next: "Next slide", pause: "Pause slideshow", play: "Play slideshow", slide: "Slide" },
   quickLinks: [
     { label: "Register online", href: "/admissions/apply", icon: "apply" },
     { label: "Fee structure", href: "/admissions#fees", icon: "fees" },

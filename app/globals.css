@@ -143,3 +143,21 @@ html[lang="ur"] .ltr, html[lang="ar"] .ltr { font-family: var(--font-sans); }
 @media (prefers-reduced-motion: reduce) {
   .kenburns, .slide-in { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
+
+/* Living hero: the photo is dim until the visitor's light reveals it (drawn on canvas) */
+.hero-stage { --ox: 70%; --oy: 55%; }
+.hero-dim { filter: grayscale(1) brightness(.6) contrast(1.1); }
+.iris-in { animation: iris 1.6s cubic-bezier(.65, 0, .2, 1) both; }
+@keyframes iris {
+  from { clip-path: circle(0 at var(--ox) var(--oy)); }
+  to { clip-path: circle(150vmax at var(--ox) var(--oy)); }
+}
+.hero-word { display: inline-block; opacity: 0; animation: wordIn 1s cubic-bezier(.2, .7, .2, 1) forwards; }
+@keyframes wordIn {
+  from { opacity: 0; transform: translateY(.45em); filter: blur(12px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .iris-in { animation: none !important; }
+  .hero-word { animation: none !important; opacity: 1 !important; }
+}
