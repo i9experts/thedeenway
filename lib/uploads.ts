@@ -11,7 +11,9 @@ export const VIDEO_TYPES: Record<string, string> = {
   "video/webm": "webm",
   "video/quicktime": "mov",
 };
-export const MIME_BY_EXT: Record<string, string> = { mp4: "video/mp4", webm: "video/webm", mov: "video/quicktime" };
+export const IMAGE_TYPES: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+export const MIME_BY_EXT: Record<string, string> = { mp4: "video/mp4", webm: "video/webm", mov: "video/quicktime", jpg: "image/jpeg", png: "image/png", webp: "image/webp" };
 
 export function uploadsConfigured() {
   return Boolean(process.env.UPLOAD_DIR);
@@ -26,7 +28,7 @@ export async function uploadDir() {
 
 /** Only names we generated ourselves: 32 hex chars + known extension. */
 export function safeFileName(name: string) {
-  return /^[a-f0-9]{32}\.(mp4|webm|mov)$/.test(name) ? name : null;
+  return /^[a-f0-9]{32}\.(mp4|webm|mov|jpg|png|webp)$/.test(name) ? name : null;
 }
 
 export async function filePath(name: string) {

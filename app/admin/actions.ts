@@ -10,6 +10,7 @@ import { needsResolving } from "@/lib/reels";
 import { updateApplication } from "@/lib/admissions";
 import { STATUSES, type AppStatus } from "@/lib/admissionsShared";
 import { removeUpload } from "@/lib/uploads";
+import { deletePerson, movePerson } from "@/lib/people";
 
 async function clientIp() {
   const h = await headers();
@@ -113,4 +114,19 @@ export async function saveApplication(formData: FormData) {
   });
   revalidatePath("/admin/admissions");
   redirect(`/admin/admissions/${id}?saved=1`);
+}
+
+export async function removePerson(formData: FormData) {
+  await requireAdmin();
+  const gone = await deletePerson(Number(formData.get("id")));
+  if (gone?.photo.startsWith("/media/")) await removeUpload(gone.photo);
+  revalidatePath("/admin/people");
+  redirect("/admin/people?deleted=1");
+}
+
+export async function reorderPerson(formData: FormData) {
+  await requireAdmin();
+  await movePerson(Number(formData.get("id")), formData.get("dir") === "up" ? -1 : 1);
+  revalidatePath("/admin/people");
+  redirect("/admin/people");
 }

@@ -338,6 +338,8 @@ const ar: Dict = {
       intro: "مدرسة إسلامية تُعدّ متعلمين مدى الحياة ذوي شخصية قوية ومتوازنة.",
       links: [
         { label: "المؤسس", desc: "عتيق الرحمن أيوبي", href: "/about/founder" },
+        { label: "فريق القيادة", desc: "من يقودون المدرسة", href: "/about/leadership" },
+        { label: "الهيئة التعليمية", desc: "معلمونا", href: "/about/faculty" },
         { label: "الرؤية", desc: "الغاية والإيمان والخدمة", href: "/about#vision" },
         { label: "الرسالة", desc: "تعليم شامل ومتوازن", href: "/about#mission" },
         { label: "المرافق", desc: "الفصول والمختبرات والمكتبة", href: "/about#facilities" },

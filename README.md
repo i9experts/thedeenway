@@ -62,3 +62,7 @@ The portal runs in **demo mode** on a sample family until Eldermin's integration
 - Staff manage applications at `/admin/admissions`: search and filter, open an application, set its status and assessment time, write a message for the parent and an internal note, open uploaded documents, and download a CSV.
 - Needs `DATABASE_URL`. Without it the apply page falls back to the WhatsApp registration form. Document upload also needs `UPLOAD_DIR` (documents are stored privately and served only to signed-in staff).
 - Not built yet: online fee payment, automatic SMS/WhatsApp/email notifications, and sending accepted applications to Eldermin.
+
+## Leadership and faculty profiles
+
+Shown at `/about/leadership` and `/about/faculty`, managed at `/admin/people` (add, edit, reorder, delete; photo upload or a photo from the old website in `public/staff-photos/`). Needs `DATABASE_URL`; photo upload also needs `UPLOAD_DIR`. The founder always appears first on the leadership page.

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { logout } from "@/app/admin/actions";
 
-export default function AdminShell({ children, signedIn = false, tab, newApplications = 0 }: { children: React.ReactNode; signedIn?: boolean; tab?: "reels" | "admissions"; newApplications?: number }) {
+export default function AdminShell({ children, signedIn = false, tab, newApplications = 0 }: { children: React.ReactNode; signedIn?: boolean; tab?: "reels" | "admissions" | "people"; newApplications?: number }) {
   const link = (active: boolean) => `rounded-full px-4 py-1.5 text-sm font-semibold ${active ? "bg-forest-800 text-white" : "text-forest-900 hover:bg-cream"}`;
   return (
     <div className="min-h-screen">
@@ -17,6 +17,7 @@ export default function AdminShell({ children, signedIn = false, tab, newApplica
                 Admissions
                 {newApplications > 0 && <span className="ms-2 rounded-full bg-gold-500 px-2 py-0.5 text-xs font-bold text-forest-950">{newApplications}</span>}
               </Link>
+              <Link href="/admin/people" className={link(tab === "people")} aria-current={tab === "people" ? "page" : undefined}>People</Link>
               <Link href="/admin" className={link(tab === "reels")} aria-current={tab === "reels" ? "page" : undefined}>Reels</Link>
             </nav>
           )}
