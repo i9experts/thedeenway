@@ -335,6 +335,7 @@ const en = {
     about: {
       intro: "An Islamic school nurturing lifelong learners with strong and balanced character.",
       links: [
+        { label: "Founder", desc: "Atiq ur Rehman Ayubi", href: "/about/founder" },
         { label: "Vision", desc: "Purpose, faith and service", href: "/about#vision" },
         { label: "Mission", desc: "Holistic, balanced education", href: "/about#mission" },
         { label: "Campus facilities", desc: "Classrooms, labs, library", href: "/about#facilities" },

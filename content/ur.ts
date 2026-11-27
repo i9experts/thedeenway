@@ -337,6 +337,7 @@ const ur: Dict = {
     about: {
       intro: "ایک اسلامی اسکول جو مضبوط اور متوازن کردار کے حامل تاحیات سیکھنے والے تیار کرتا ہے۔",
       links: [
+        { label: "بانی", desc: "عتیق الرحمٰن ایوبی", href: "/about/founder" },
         { label: "وژن", desc: "مقصد، ایمان اور خدمت", href: "/about#vision" },
         { label: "مشن", desc: "ہمہ جہت اور متوازن تعلیم", href: "/about#mission" },
         { label: "کیمپس کی سہولیات", desc: "کلاس روم، لیبز، لائبریری", href: "/about#facilities" },
